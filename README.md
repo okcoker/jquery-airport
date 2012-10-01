@@ -26,7 +26,7 @@ Default value - true,
 Default value - false
 
 
-`colors` {String} - List of comma separated colors i.e. '#b5c523,#E7860E,#e7c623,#730606,#46a8fb'
+`colors` {String} - List of comma separated colors to randomly color your values i.e. '#b5c523,#E7860E'
 
 Default value - null
 
