@@ -9,5 +9,20 @@ Airtport is very easy to use. Create an element, give it an ID and throw airport
 
 `$(  element  ).airport([ 'moscow', 'berlin', 'stockholm' ]);`
 
+Options
+=======
+`transition_speed` - {number} Time in ms before switching to the next word
+Default value - 1000,
+
+`loop` - {boolean} Choose whether to stop at the end of your values or keep looping through
+Default value - true,
+
+`fill_space` {boolean} - Puts spaces (&nbsp;) after shorter words to fill in space of your longest word
+Default value - false
+
+`colors` {String} - List of comma separated colors i.e. ('#b5c523,#E7860E,#e7c623,#730606,#46a8fb')
+Default value - null
+
+
 
 Original work by [Jan Järfalk](http://unwrongest.com/projects/airport/)
