@@ -1,46 +1,96 @@
-(function($){ 
-     $.fn.extend({  
-         airport: function(array) {
-			
-			var self = $(this);
-			var chars = ['a','b','c','d','e','f','g',' ','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z','-'];
-			var longest = 0;
-			var items = items2 = array.length;
+var jQuery = jQuery || {}; //@todo remove this during production. Sublime gives annoying not defined error without it
+(function($) {
+    $.fn.airport = function(array, options) {
 
-			function pad(a,b) { return a + new Array(b - a.length + 1).join(' '); }
-			
-			$(this).empty();
-			
-			while(items--)
-				if(array[items].length > longest) longest = array[items].length;
+		var opts = $.extend({
+			transition_speed	: 1000,
+			loop				: true,
+			fill_space			: false,
+			colors				: null
+		}, options),
+			self = $(this),
+			chars = ['a','b','c','d','e','f','g',' ','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z','-'],
+			spans,
+			colors,
+			longest = 0,
+			items = array.length,
+			items2 = array.length;
 
-			while(items2--)
-				array[items2] = pad(array[items2],longest);
-				
-			spans = longest;
-			while(spans--)
-				$(this).prepend("<span class='c" + spans + "'></span>");
-				
-			
-			function testChar(a,b,c,d){
-				if(c >= array.length)
-					setTimeout(function() { testChar(0,0,0,0); }, 1000);				
-				else if(d >= longest)
-					setTimeout(function() { testChar(0,0,c+1,0); }, 1000);
-				else {
-					$(self).find('.c'+a).html((chars[b]==" ")?"&nbsp;":chars[b]);
-					setTimeout(function() {
-						if(b > chars.length)
-							testChar(a+1,0,c,d+1);
-						else if(chars[b] != array[c].substring(d,d+1).toLowerCase())
-							testChar(a,b+1,c,d);
-						else
-							testChar(a+1,0,c,d+1);
-					}, 20);
-				}
+		//adds extra spaces to strings in array that are shorter than longest
+		function pad(a, b) {
+			return a + new Array(b - a.length + 1).join(' ');
+		}
+
+		self.empty();
+
+		//finds the longest string in array
+		while (items--) {
+			if(array[items].length > longest) {
+				longest = array[items].length;
 			}
-			
-			testChar(0,0,0,0);
-        } 
-    }); 
+		}
+
+		//makes all strings in array the same length
+		while (items2--) {
+			array[items2] = pad(array[items2],longest);
+		}
+
+		spans = longest;
+		while (spans--) {
+			var span = document.createElement('span');
+			span.className = 'c' + spans;
+			self.prepend(span);
+		}
+
+		if (opts.colors) {
+			colors = opts.colors.split(',');
+		}
+		//a - number of the span element
+		//b - for checking char[b] against each letter in array[xx]
+		//c - current word in array[c]
+		//d - used to track position of each letter in array[xx]
+		function testChar(a,b,c,d) {
+			var el = self.find('.c' + a),
+				current_letter = !!array[c] ? array[c].substring(d,d+1) : null,
+				timer, color;
+
+			if (c >= array.length) { //reset
+				if (!opts.loop) {
+					clearTimeout(timer);
+					return;
+				}
+				timer = setTimeout(function() {
+					testChar(0,0,0,0);
+				}, 10);
+			}
+			else if (d >= longest) { //go to next word
+
+				timer = setTimeout(function() {
+					if (opts.colors) {
+						color = colors[~~(Math.random() * colors.length)];
+						self.css('color', color.substring(0,1) === '#' ? color : '#' + color);
+					}
+					testChar(0,0,c+1,0);
+				}, opts.transition_speed);
+			}
+			else {
+				el.html((chars[b] === ' ') ? '&nbsp;' : chars[b]);
+				timer = setTimeout(function() {
+					if (b > chars.length) {
+						testChar(a+1,0,c,d+1);
+					}
+					//go to next letter in chars[] if it doesnt match current letter in array[xx]
+					else if (chars[b] !== current_letter.toLowerCase()) {
+						testChar(a,b+1,c,d);
+					}
+					else { //found the letter here
+						el.html((current_letter === ' ' && opts.fill_space) ? '&nbsp;' : current_letter);
+						testChar(a+1,0,c,d+1);
+					}
+				}, 10);
+			}
+		}
+
+		testChar(0,0,0,0);
+    };
 })(jQuery);
