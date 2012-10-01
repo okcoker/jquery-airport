@@ -21,7 +21,7 @@ Default value - 1000,
 Default value - true,
 
 
-`fill_space` {boolean} - Puts spaces (&nbsp;) after shorter words to fill in space of your longest word
+`fill_space` {boolean} - Puts spaces (nbsp) after shorter words to fill in space of your longest word
 
 Default value - false
 
