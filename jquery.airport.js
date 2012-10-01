@@ -49,10 +49,12 @@ var jQuery = jQuery || {}; //@todo remove this during production. Sublime gives 
 		//b - for checking char[b] against each letter in array[xx]
 		//c - current word in array[c]
 		//d - used to track position of each letter in array[xx]
-		function testChar(a,b,c,d) {
+		function init(a,b,c,d) {
 			var el = self.find('.c' + a),
-				current_letter = !!array[c] ? array[c].substring(d,d+1) : null,
-				timer, color;
+				current_letter = array[c] ? array[c].substring(d,d+1) : null,
+				timer, color,
+				word_len = array[c] ? $.trim(array[c]).length : null,
+				prev_word_len = array[c - 1] ? $.trim(array[c - 1]).length : $.trim(array[0]).length;
 
 			if (c >= array.length) { //reset
 				if (!opts.loop) {
@@ -60,7 +62,7 @@ var jQuery = jQuery || {}; //@todo remove this during production. Sublime gives 
 					return;
 				}
 				timer = setTimeout(function() {
-					testChar(0,0,0,0);
+					init(0,0,0,0);
 				}, 10);
 			}
 			else if (d >= longest) { //go to next word
@@ -70,27 +72,35 @@ var jQuery = jQuery || {}; //@todo remove this during production. Sublime gives 
 						color = colors[~~(Math.random() * colors.length)];
 						self.css('color', color.substring(0,1) === '#' ? color : '#' + color);
 					}
-					testChar(0,0,c+1,0);
+					init(0,0,c+1,0);
 				}, opts.transition_speed);
 			}
 			else {
 				el.html((chars[b] === ' ') ? '&nbsp;' : chars[b]);
 				timer = setTimeout(function() {
 					if (b > chars.length) {
-						testChar(a+1,0,c,d+1);
+						init(a+1,0,c,d+1);
 					}
 					//go to next letter in chars[] if it doesnt match current letter in array[xx]
 					else if (chars[b] !== current_letter.toLowerCase()) {
-						testChar(a,b+1,c,d);
+						init(a,b+1,c,d);
 					}
 					else { //found the letter here
 						el.html((current_letter === ' ' && opts.fill_space) ? '&nbsp;' : current_letter);
-						testChar(a+1,0,c,d+1);
+						if (word_len < prev_word_len) {
+							if (a > word_len) {
+								for (a; a < prev_word_len; a++) {
+									self.find('.c' + a).html('');
+								}
+								d = longest;
+							}
+						}
+						init(a+1,0,c,d+1);
 					}
 				}, 10);
 			}
 		}
 
-		testChar(0,0,0,0);
+		init(0,0,0,0);
     };
 })(jQuery);
