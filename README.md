@@ -1,7 +1,7 @@
 jQuery Airport
 ==============
 
-Airport is a rather simple text effect plugin for Jquery. It emulates the style of those flickering information boards you sometimes find on airports and train stations.
+Airport is a rather simple text effect plugin for Jquery. It emulates the style of those flickering information boards you sometimes find on airports and train stations. [Demo](http://seancoker.com/projects/airport)
 
 How to use Airport
 ==================
