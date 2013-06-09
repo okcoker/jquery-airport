@@ -47,7 +47,7 @@
         }
 
         if (opts.colors) {
-            colors = opts.colors.split(',');
+            colors = opts.colors.replace(/\s+/g, '').split(',');
         }
         //a - number of the span element
         //b - for checking char[b] against each letter in array[xx]
