@@ -1,4 +1,11 @@
 /*global jQuery */
+ /*!
+ * @author Sean Coker <sean@seancoker.com>
+ * @author Jan Järfalk <jan.jarfalk@unwrongest.com>
+ * @Version 1.0.2
+ * @url http://sean.is/building/jquery-airport
+ * @description Airport is a rather simple text effect plugin for Jquery. It emulates the style of those flickering information boards you sometimes find on airports and train stations.
+ */
 
 ;(function($) {
 
@@ -13,7 +20,7 @@
             colors              : null
         }, options),
             self = $(this),
-            chars = ['a', 'b', 'c', 'd', 'e', 'f', 'g', ' ', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '-', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0'],
+            chars = ['a', 'b', 'c', 'd', 'e', 'f', 'g', ' ', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '-', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0','!','¿','?','-','+','.',',',"'",'"','ç','ñ','à','á','è','é','ì','í','ò','ó','ù','ú','À','Á','È','É','Ì','Í','Ò','Ó','Ù','Ú'],
             spans,
             colors,
             longest = 0,
